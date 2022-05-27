@@ -1,4 +1,4 @@
 # haw-agendaathlet
 HAW Hamburg Agenda Athlet
 
-Coming soon!
+This Project is still under development, will be released in a bit!
