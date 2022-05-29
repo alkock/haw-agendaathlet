@@ -7,6 +7,7 @@
 Der HAW Agenda Athlet ist dein täglicher Begleiter für den Campus der HAW Hamburg! <br> Du findest mit einem Klick alle anstehenden Module oder Projekte zudem kannst du alle Events die die Fakultät TI abhält easy und schnell importieren. Falls du zwischendurch die Mensa des Studierendenwerks abchecken möchtest kannst du bei uns ganz einfach den gesamten Mensaplan einsehen. <br> Falls du vergesslich bist haben wir für dich auch noch eine To-Do Liste eingebastelt.
 
 ## Lizenz
+GNU General Public License v3.0
 
 ## Mach mit!
 Da dieses Projekt nur über ein Semester entstanden ist, aber weiterhin von fleißigen Helfen gewartet und erweitert werden soll darfst du gerne mitmachen. 
