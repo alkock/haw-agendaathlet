@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Relative Layout-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/relativelayout"
+    android:orientation="vertical">
+
+
+
+    <SearchView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Suche"
+        android:iconifiedByDefault="false"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="25dp"
+        android:queryHint="Suche Veranstaltungen...">
+    </SearchView>
+
+    <ListView
+        android:id="@+id/listeEvents"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:choiceMode="multipleChoice"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:scrollbars="none"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
+        />
+
+</LinearLayout>
