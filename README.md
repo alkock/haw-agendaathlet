@@ -1,4 +1,5 @@
 # HAW Agenda Athlet
+[![Android CI](https://github.com/alkock/haw-agendaathlet/actions/workflows/android.yml/badge.svg)](https://github.com/alkock/haw-agendaathlet/actions/workflows/android.yml)
 <!--<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" width=20%> <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" width=20%>
 <br>-->
 <img src="pictures/mainscreen.png" width=15%> <img src="pictures/modulauswahl.png" width=15%> <img src="pictures/moduldetail.png" width=15%> <img src="pictures/mensaplan.png" width=15%>
