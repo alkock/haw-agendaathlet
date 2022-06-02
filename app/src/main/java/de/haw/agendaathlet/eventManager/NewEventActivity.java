@@ -109,6 +109,7 @@ public class NewEventActivity extends AppCompatActivity {
 
     private void fillFieldsWithText() {
         editEventDate.setText(CalendarUtils.DateToString(eventDate));
+        System.out.println(CalendarUtils.DateToString(eventDate));
         eventDateTV.setText("Datum: ");
         eventstartTimeTV.setText("Startzeit: ");
         eventendTimeTV.setText("Endzeit: ");
@@ -262,12 +263,12 @@ public class NewEventActivity extends AppCompatActivity {
         DatePickerDialog.OnDateSetListener listner = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-                LocalDate date = LocalDate.of(year, monthOfYear, dayOfMonth);
+                LocalDate date = LocalDate.of(year, monthOfYear+1, dayOfMonth);
                 eventDate = date;
                 editEventDate.setText(CalendarUtils.DateToString(eventDate));
             }
         };
-        DatePickerDialog datePickerDialog = new DatePickerDialog((this), listner, eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth());
+        DatePickerDialog datePickerDialog = new DatePickerDialog((this), listner, eventDate.getYear(), eventDate.getMonthValue()-1, eventDate.getDayOfMonth());
         datePickerDialog.setTitle("Datum auswählen");
         datePickerDialog.show();
     }

@@ -81,7 +81,7 @@
                         android:layout_marginTop="12dp"
                         android:textColor="@color/blue"
                         android:textSize="18sp"
-                        android:text="ICS Datein"
+                        android:text="ICS Dateien"
                         />
 
                 </LinearLayout>

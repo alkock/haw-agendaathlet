@@ -29,6 +29,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -108,22 +109,27 @@ public class WeeklyEventActivity extends AppCompatActivity
         startTime = LocalTime.parse(start, formatter);
         endTime = LocalTime.parse(end, formatter);
 
-        String[] days = weekdays.split(",");
-        String[] weeksArray = weeks.split(",");
+        try {
 
-        for (String week : weeksArray)
-        {
-            for (String day : days)
-            {
-                LocalDate date = LocalDate.of(2022, 1, 1).with(WeekFields.of(Locale.GERMANY).dayOfWeek(), Integer.parseInt(day)).plusWeeks(Integer.parseInt(week));
-                Event newEvent = new Event(eventName, date, startTime, endTime, desc);
-                InjectorManager.IM.gibEventLogic().getEventList().add(newEvent);
-                List e = new ArrayList();
-                e.add(newEvent);
-                InjectorManager.IM.gibDatenverwaltung().speichereEvents(e);
+            String[] days = weekdays.split(",");
+            String[] weeksArray = weeks.split(",");
+
+            for (String week : weeksArray) {
+                for (String day : days) {
+                    LocalDate date = LocalDate.of(2022, 1, 1).with(WeekFields.of(Locale.GERMANY).dayOfWeek(), Integer.parseInt(day)).plusWeeks(Integer.parseInt(week));
+                    Event newEvent = new Event(eventName, date, startTime, endTime, desc);
+                    InjectorManager.IM.gibEventLogic().getEventList().add(newEvent);
+                    List e = new ArrayList();
+                    e.add(newEvent);
+                    InjectorManager.IM.gibDatenverwaltung().speichereEvents(e);
+                }
             }
+            finish();
         }
-        finish();
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Fehler bei Tage oder Wochenangabe", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void popUpTimerStart(View view) {

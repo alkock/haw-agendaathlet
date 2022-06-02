@@ -62,6 +62,7 @@ public class DashboardActivity extends AppCompatActivity {
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             startActivityForResult(intent, PICKFILE_RESULT_CODE);
         }
+        finish();
     }
 
 }
