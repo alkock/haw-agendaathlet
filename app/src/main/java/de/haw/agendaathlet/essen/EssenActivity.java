@@ -1,30 +1,9 @@
-/**
- * HAWAgendaAthlet Android client application
- *
- * @author Tobias Kröger
- * @author Leon Schardin
- * @author Kaleb Pohl
- * @author Erfan Akhondi
- * @author Taalaibek Mateev
- * @author Ansgar Leonard Kock
- * Copyright (C) 2022.
- * <p>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3,
- * as published by the Free Software Foundation.
- * <p>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package de.haw.agendaathlet.essen;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -85,14 +64,17 @@ public class EssenActivity extends AppCompatActivity {
 
         for(int i = essensplanImpl.gibmenuliste().size()-1; i>=0; --i)
         {
-            if(essensplanImpl.gibdateliste().get(i).equals(selectedEssenDate))essens.add(new Essen(essensplanImpl.gibmenuliste().get(i), essensplanImpl.gibpriceliste().get(i), essensplanImpl.gibdateliste().get(i)));
+            if(essensplanImpl.gibdateliste().get(i).equals(selectedEssenDate))essens.add(new Essen(essensplanImpl.gibmenuliste().get(i), essensplanImpl.gibpriceliste().get(i).replace("&mdash;", "Preis folgt"), essensplanImpl.gibdateliste().get(i)));
         }
 
         Collections.sort(essens, new Comparator<Essen>() {
             @Override
             public int compare(Essen o1, Essen o2) {
-                return (int) ((Double.valueOf(o2.getPreis().replace("€", "").replace(",", ".").replace(" pro 100g", ""))*100)-(Double.valueOf(o1.getPreis().replace("€", "").replace(",", ".").replace(" pro 100g", ""))*100));
-            }
+                int result = 1;
+                try{
+                    result = (int) ((Double.valueOf(o2.getPreis().replace("€", "").replace(",", ".").replace(" pro 100g", ""))*100)-(Double.valueOf(o1.getPreis().replace("€", "").replace(",", ".").replace(" pro 100g", ""))*100));
+                }catch (Exception e){}
+                return  result;  }
         });
 
         if(essens.size() == 0)  {
@@ -108,12 +90,32 @@ public class EssenActivity extends AppCompatActivity {
 
         essensListe.setOnTouchListener(new OnSwipeTouchListener(this) {
             public void onSwipeRight() {
-                selectedEssenDate = selectedEssenDate.minusDays(1);
+                ArrayList<Essen> es = datenverwaltung.ladeEssen();
+                ArrayList<LocalDate> da = new ArrayList<LocalDate>(datenverwaltung.ladeEssen().size());
+                for(Essen e : es)
+                {
+                    da.add(e.getDatum());
+                }
+                LocalDate minDate = Collections.min(da);
+                if(!selectedEssenDate.equals(minDate))
+                {
+                    selectedEssenDate = selectedEssenDate.minusDays(1);
+                }
                 setDayView();
             }
 
             public void onSwipeLeft() {
-                selectedEssenDate = selectedEssenDate.plusDays(1);
+                ArrayList<Essen> es = datenverwaltung.ladeEssen();
+                ArrayList<LocalDate> da = new ArrayList<LocalDate>(datenverwaltung.ladeEssen().size());
+                for(Essen e : es)
+                {
+                    da.add(e.getDatum());
+                }
+                LocalDate maxDate = Collections.max(da);
+                if(!selectedEssenDate.equals(maxDate))
+                {
+                    selectedEssenDate = selectedEssenDate.plusDays(1);
+                }
                 setDayView();
             }
         });
