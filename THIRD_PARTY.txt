@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 The source distribution of this program should include a full copy
-of the GNU GPL version 2 license in the LICENSE.txt file located
+of the GNU GPL version 3 license in the LICENSE.txt file located
 in its root directory. If not, see <http://www.gnu.org/licenses/>.
 
 
