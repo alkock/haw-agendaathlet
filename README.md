@@ -16,3 +16,12 @@ Da dieses Projekt nur über ein Semester entstanden ist, aber weiterhin von flei
 
 ## Über das Projekt
 Dieses Projekt ist im Rahmen des Studiums entstanden. Da wir vermuten, dass wir vielen Studenten der Fakultät TI mit einem solchen Tool helfen können haben wir uns entschieden dies zu veröffentlichen.
+
+## Dankesagung
+Ein herzliches Dankeschön an die nachfolgenden Teammitglieder, die die App erschaffen haben, so wie sie ist:
+ * Tobias Kröger (HAW Hamburg)
+ * Leon Schardin (HAW Hamburg)
+ * Kaleb Pohl (HAW Hamburg)
+ * Erfan Akhondi (HAW Hamburg)
+ * Taalaibek Mateev (HAW Hamburg) 
+ * Ansgar Leonard Kock (HAW Hamburg)
