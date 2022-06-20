@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="required">Required</string>
-    <string name="name">Name</string>
-    <string name="wochentag">Wochentage</string>
-    <string name="wochen">Wochen</string>
-    <string name="beschreibung">Beschreibung</string>
-</resources>
