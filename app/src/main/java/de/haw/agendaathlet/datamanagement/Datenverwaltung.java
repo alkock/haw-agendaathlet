@@ -32,24 +32,22 @@ import de.haw.agendaathlet.eventVisual.Event;
 
 /**
  * Schnittstelle für eine Datenverwaltung
- * @author Ansgar
  *
+ * @author Ansgar
  */
 public interface Datenverwaltung {
     /**
      * Speichert eine Liste von Events.
      * Redundate Speicherungen werden überschrieben.
      *
-     * @param o  Liste von Events
-     *
+     * @param o Liste von Events
      */
     void speichereEvents(List<Event> o);
 
     /**
      * Lädt eine Liste von Events die zuvor in der DB gespeichert wurden.
      *
-     * @return  Liste von Events
-     *
+     * @return Liste von Events
      */
     ArrayList<Event> ladeEvents();
 
@@ -57,16 +55,14 @@ public interface Datenverwaltung {
      * Speichert eine Liste von Essen.
      * Redundante Speicherungen werden überschrieben.
      *
-     * @param localname  Liste von Essen.
-     *
+     * @param localname Liste von Essen.
      */
     void speichereEssen(List<String> localname, List<String> localpreis, List<LocalDate> localdate);
 
     /**
      * Lädt eine Liste von Essen die zuvor in der DB gespeichert wurden.
      *
-     * @return  Eine Liste mit drei Listen: List<String> localname, List<String> localpreis, List<LocalDate> localdate
-     *
+     * @return Eine Liste mit drei Listen: List<String> localname, List<String> localpreis, List<LocalDate> localdate
      */
     ArrayList<Essen> ladeEssen();
 
@@ -89,4 +85,16 @@ public interface Datenverwaltung {
     Löscht alle Events.
      */
     void loescheAlles();
+
+    /*
+      Dieser Boolean gibt aus, ob die Synchronisation mit der Cloud aktiv ist.
+     */
+    boolean isFirebaseSynchActive();
+
+    /*
+        Diese Methode deaktiviert oder aktiviert die Synchronisation mittels der Cloud.
+        true -> aktivieren
+        false -> deaktivieren
+     */
+    void setFirebaseSynchActive(boolean firebaseSynchActive);
 }

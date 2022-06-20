@@ -34,7 +34,7 @@
             android:name=".eventManager.NewEventActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".eventManager.PopupDetail"
+            android:name=".eventManager.PopupDetailActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".essen.EssenActivity"

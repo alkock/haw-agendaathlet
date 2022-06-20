@@ -11,7 +11,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
-        android:layout_width="440dp"
+        android:layout_width="match_parent"
         android:layout_height="204dp">
 
         <TextView
@@ -34,9 +34,10 @@
 
         <ImageView
             android:id="@+id/backgroundImageView"
-            android:layout_width="0dp"
-            android:layout_height="214dp"
-            android:layout_marginStart="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.973"
             app:layout_constraintStart_toEndOf="@+id/textView"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/logobackgroundkreis" />

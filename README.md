@@ -16,4 +16,3 @@ Da dieses Projekt nur über ein Semester entstanden ist, aber weiterhin von flei
 
 ## Über das Projekt
 Dieses Projekt ist im Rahmen des Studiums entstanden. Da wir vermuten, dass wir vielen Studenten der Fakultät TI mit einem solchen Tool helfen können haben wir uns entschieden dies zu veröffentlichen.
-

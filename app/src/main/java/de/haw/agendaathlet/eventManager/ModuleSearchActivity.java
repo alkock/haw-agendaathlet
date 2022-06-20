@@ -23,6 +23,7 @@
  */
 package de.haw.agendaathlet.eventManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,6 +42,8 @@ import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import de.haw.agendaathlet.InjectorManager;
 import de.haw.agendaathlet.R;
@@ -52,8 +55,7 @@ public class ModuleSearchActivity extends AppCompatActivity {
     private SearchView suchView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_module_selection);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -61,27 +63,40 @@ public class ModuleSearchActivity extends AppCompatActivity {
         initWidgets();
     }
 
-    private void initWidgets()
-    {
+    private void initWidgets() {
         listeNamen = findViewById(R.id.listeNamen);
         adapter = new ModuleSearchAdapter(this, android.R.layout.simple_list_item_multiple_choice, InjectorManager.IM.gibICSCrawler().getNameList());
         suchView = findViewById(R.id.SearchNamen);
-        listeNamen.setAdapter(adapter);
+        if (adapter.getCount() > 0) {
+            listeNamen.setAdapter(adapter);
+        } else {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(ModuleSearchActivity.this, ModuleSearchActivity.class));
+                            finish();
+                        }
+                    });
+                }
+            }, 1000);
+        }
         initSuchListener();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item)
-    {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.item_done) {
+        if (id == R.id.item_done) {
 
             setContentView(R.layout.activity_module_selection);
             Toolbar toolbar = findViewById(R.id.toolbar);
@@ -116,7 +131,8 @@ public class ModuleSearchActivity extends AppCompatActivity {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                            }}
+                            }
+                        }
                         for (int i = 0; i < listeNamen.getAdapter().getCount(); i++) {
                             ModuleSearchAdapter.checkBoxState2[i] = false;
                         }
@@ -128,24 +144,25 @@ public class ModuleSearchActivity extends AppCompatActivity {
         }
 
         Toast.makeText(ModuleSearchActivity.this, "Erfolgreich importiert ✅", Toast.LENGTH_LONG).show();
+
         finish();
+        // startActivity(new Intent(ModuleSearchActivity.this, MainActivity.class));
         return true;
     }
 
-    private void initSuchListener()
-    {
+    private void initSuchListener() {
         suchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String s) { return false;}
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
 
             @Override
-            public boolean onQueryTextChange(String s)
-            {
+            public boolean onQueryTextChange(String s) {
                 ArrayList<String> filteredList = new ArrayList<String>();
 
-                for(String string: InjectorManager.IM.gibICSCrawler().getNameList())
-                {
-                    if(string.toLowerCase().contains(s.toLowerCase())) filteredList.add(string);
+                for (String string : InjectorManager.IM.gibICSCrawler().getNameList()) {
+                    if (string.toLowerCase().contains(s.toLowerCase())) filteredList.add(string);
                 }
                 ModuleSearchAdapter adapter2 = new ModuleSearchAdapter(getApplicationContext(), 0, filteredList);
                 listeNamen.setAdapter(adapter2);

@@ -27,7 +27,16 @@ import java.util.Comparator;
 
 public class EventZeitComparator implements Comparator<Event> {
     @Override
+    //Event has date, hour and minute
     public int compare(Event event1, Event event2) {
-        return event1.getstarTime().compareTo(event2.getstarTime());
+        if (event1.getDate().compareTo(event2.getDate()) == 0) {
+            if (event1.getstarTime().getHour() == event2.getstarTime().getHour()) {
+                return event1.getstarTime().getMinute() - event2.getstarTime().getMinute();
+            } else {
+                return event1.getstarTime().getHour() - event2.getstarTime().getHour();
+            }
+        } else {
+            return event1.getDate().compareTo(event2.getDate());
+        }
     }
 }

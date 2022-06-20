@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import de.haw.agendaathlet.InjectorManager;
 import de.haw.agendaathlet.R;
 import de.haw.agendaathlet.eventManager.CalendarUtils;
-import de.haw.agendaathlet.eventManager.PopupDetail;
+import de.haw.agendaathlet.eventManager.PopupDetailActivity;
 
 public class EventSearchAdapter extends ArrayAdapter<Event> {
 
@@ -62,7 +62,7 @@ public class EventSearchAdapter extends ArrayAdapter<Event> {
         eventName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), PopupDetail.class);
+                Intent intent = new Intent(getContext(), PopupDetailActivity.class);
 
                 int i = InjectorManager.IM.gibEventLogic().getEventList().indexOf(event);
                 intent.putExtra("event", i);
@@ -73,7 +73,7 @@ public class EventSearchAdapter extends ArrayAdapter<Event> {
         eventDatum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), PopupDetail.class);
+                Intent intent = new Intent(getContext(), PopupDetailActivity.class);
 
                 int i = InjectorManager.IM.gibEventLogic().getEventList().indexOf(event);
                 intent.putExtra("event", i);
@@ -84,7 +84,7 @@ public class EventSearchAdapter extends ArrayAdapter<Event> {
         eventZeit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), PopupDetail.class);
+                Intent intent = new Intent(getContext(), PopupDetailActivity.class);
 
                 int i = InjectorManager.IM.gibEventLogic().getEventList().indexOf(event);
                 intent.putExtra("event", i);
@@ -94,4 +94,5 @@ public class EventSearchAdapter extends ArrayAdapter<Event> {
         });
         return convertView;
     }
+
 }

@@ -21,14 +21,17 @@
         android:layout_height="wrap_content"
         android:id="@+id/SearchNamen"
         android:iconifiedByDefault="false"
+        android:layout_marginBottom="10dp"
         android:queryHint="Suche Veranstaltungen...">
     </SearchView>
 
     <ListView
         android:id="@+id/listeNamen"
-        android:layout_width="match_parent"
+        android:layout_width="373dp"
         android:layout_height="fill_parent"
         android:choiceMode="multipleChoice"
-        />
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10.0sp"
+        android:scrollbars="none"/>
 
 </LinearLayout>

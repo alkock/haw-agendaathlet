@@ -25,30 +25,33 @@ package de.haw.agendaathlet.crawler;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 public interface Essensplan {
 
     /**
      * Lädt den Essensplan von der Website der Mensa
+     *
      * @throws Exception
      */
     void ladeEssen(String url, int preis) throws Exception;
 
     /**
      * Gibt die Menüliste zurück
+     *
      * @return ArrayList mit den Menüs
      */
     ArrayList<String> gibmenuliste();
 
     /**
      * Gibt die Preisliste zurück
+     *
      * @return ArrayList mit den Preisen im Format EE,CC
      */
     ArrayList<String> gibpriceliste();
 
     /**
      * Gibt die Dateliste zurück
+     *
      * @return ArrayList mit den Dates
      */
     ArrayList<LocalDate> gibdateliste();

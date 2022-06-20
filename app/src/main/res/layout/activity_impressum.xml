@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
     android:screenOrientation="portrait"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -26,7 +28,9 @@
             android:src="@drawable/fg5"
             android:textAlignment="center" />
 
-    </LinearLayout>>
+    </LinearLayout><![CDATA[>
+
+    ]]>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,16 +54,15 @@
 
     </LinearLayout>
 
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="HAW Hamburg"
         android:layout_marginBottom="18dp"
-        android:textColor="@color/gray"
+        android:text="für die HAW Hamburg"
         android:textAlignment="center"
-        android:textSize="18sp"/>
-
-
+        android:textColor="@color/gray"
+        android:textSize="18sp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -114,14 +117,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Kaleb Pohl"
-        android:layout_marginTop="8dp"
         android:layout_marginLeft="0dp"
+        android:layout_marginTop="8dp"
         android:layout_marginRight="0dp"
         android:layout_marginBottom="0dp"
-        android:textColor="@color/black"
+        android:text="Kaleb Pohl"
         android:textAlignment="center"
-        android:textSize="20sp"/>
+        android:textColor="@color/black"
+        android:textSize="20sp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -135,31 +138,32 @@
         android:textAlignment="center"
         android:textSize="20sp"/>
 
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Leon Schardin"
-        android:layout_marginTop="8dp"
         android:layout_marginLeft="0dp"
+        android:layout_marginTop="8dp"
         android:layout_marginRight="0dp"
         android:layout_marginBottom="0dp"
-        android:textColor="@color/black"
+        android:text="Leon Schardin"
         android:textAlignment="center"
-        android:textSize="20sp"/>
-
+        android:textColor="@color/black"
+        android:textSize="20sp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Entstanden im Rahmen von SEA2 bei Prof. Dr. Steffens"
-        android:layout_marginTop="50dp"
+android:layout_marginTop="20dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:layout_marginBottom="0dp"
+        android:layout_marginBottom="10dp"
         android:textColor="@color/gray"
         android:textStyle="normal"
         android:textAlignment="center"
-        android:textSize="18sp"/>
+        android:textSize="18sp"
+        />
 
 
     <LinearLayout
@@ -167,28 +171,47 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-
         <Button
-            android:layout_marginTop="0dp"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/buttonshapes"
+            android:onClick="schliessen"
+            android:text=" Schließen"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/supportEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
-            android:text=" Schließen"
-            android:textColor="@color/blue"
-            android:background="@color/lightGray"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:layout_gravity="bottom|center_horizontal"
-            android:onClick="schliessen"
-            />
+            android:background="@drawable/buttonshapes"
+            android:onClick="sendSupportEmail"
+            android:text="support"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"></LinearLayout>
+
     </LinearLayout>
 
 
 </LinearLayout>
 
+</ScrollView>

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_view4"
+    android:id="@+id/eventLayout">
+   >
 
 
     <TextView
@@ -9,25 +12,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:text="Kein Internet"
         android:id="@+id/fachName"
-        android:textColor="@color/black"
-        android:textSize="16dp" />
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textSize="20dp" />
 
     <CheckBox
+        android:id="@+id/checkBox1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginRight="15dp"
-        android:text=""
-        android:id="@+id/checkBox1"
+        android:layout_marginBottom="8dp"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:text=""
+        android:textColor="@color/white"
+        android:buttonTint="@color/white"
+        android:textColorHighlight="@color/white" />
 
 
 </RelativeLayout>

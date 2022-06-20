@@ -22,6 +22,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package de.haw.agendaathlet.crawler;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -31,11 +32,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class IcsUrlFinder implements ICSCrawler{
+public class IcsUrlFinder implements ICSCrawler {
 
     private final String ICS_REGEX = "href=\"(\\S+\\.ics)\"";
     public final List<URL> urlList = new ArrayList<>();
-    public  final List<String> nameList = new ArrayList<>();
+    public final List<String> nameList = new ArrayList<>();
 
     public final String[] SOURCE_URLS = {
             "https://userdoc.informatik.haw-hamburg.de/doku.php?id=stundenplan:ics_public",
@@ -69,7 +70,7 @@ public class IcsUrlFinder implements ICSCrawler{
                 Pattern pattern2 = Pattern.compile("([^\\/]*).ics(?=\\s*$|\\s*[?&amp;])");
                 Matcher matcher2 = pattern2.matcher(newUrl.toString());
                 while (matcher2.find()) {
-                   nameList.add(matcher2.group(1).replace("fetch.php?media=stundenplan:", ""));
+                    nameList.add(matcher2.group(1).replace("fetch.php?media=stundenplan:", ""));
                 }
             }
         }
@@ -80,6 +81,7 @@ public class IcsUrlFinder implements ICSCrawler{
     public List<URL> getUrlList() {
         return urlList;
     }
+
     public List<String> getNameList() {
         return nameList;
     }

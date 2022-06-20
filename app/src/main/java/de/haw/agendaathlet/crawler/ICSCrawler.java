@@ -36,11 +36,14 @@ public interface ICSCrawler {
 
     /**
      * Diese Methode gibt eine Liste von URLs zurück, die die ICS-Links enthalten.
+     *
      * @return Liste von URLs als HTTPS Link
      */
     List<URL> getUrlList();
+
     /**
      * Diese Methode gibt eine Liste von Namen zurück, die die Namen der Ics Files enthalten.
+     *
      * @return Liste von Namen der Module
      */
     List<String> getNameList();

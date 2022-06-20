@@ -40,13 +40,12 @@ import de.haw.agendaathlet.eventManager.CalendarUtils;
 public class EssensplanImpl implements Essensplan {
 
     private final ArrayList<String> listmenu;
-    private final ArrayList<String> listprice ;
-    private final ArrayList<LocalDate> listdate ;
+    private final ArrayList<String> listprice;
+    private final ArrayList<LocalDate> listdate;
     private final Datenverwaltung datenverwaltung;
 
-    public EssensplanImpl()
-    {
-        listmenu  = new ArrayList<>();
+    public EssensplanImpl() {
+        listmenu = new ArrayList<>();
         listprice = new ArrayList<>();
         listdate = new ArrayList<>();
         datenverwaltung = InjectorManager.IM.gibDatenverwaltung();
@@ -77,19 +76,20 @@ public class EssensplanImpl implements Essensplan {
 
         for (String a : st) {
 
+
             ArrayList<String> lmenu = new ArrayList<>();
             ArrayList<String> lprice = new ArrayList<>();
             int ind = a.indexOf("</span>");
-            String date = a.substring(ind+10, ind + 70).replace(" ", "");
+            String date = a.substring(ind + 10, ind + 70).replace(" ", "");
 
             LocalDate ld = CalendarUtils.DateFromString(date);
-            System.out.println("x" + ld + "x    " + a);
+            //System.out.println("x" + ld + "x    " + a);
 
             Pattern pattern = Pattern.compile("(<h5 class=\"singlemeal__headline singlemeal__headline--(.*?)\">(.*?)</h5>)");
             Matcher matcher = pattern.matcher(a);
 
             while (matcher.find()) {
-                lmenu.add(matcher.group(1).replace("  ", "").replaceAll("\\<.*?\\>", "").replaceAll("\\(.*?\\)", "").replace(" ,", ",").replace("&quot;","“"));
+                lmenu.add(matcher.group(1).replace("  ", "").replaceAll("\\<.*?\\>", "").replaceAll("\\(.*?\\)", "").replace(" ,", ",").replace("&quot;", "“"));
             }
 
             pattern = Pattern.compile("<span class=\"singlemeal__info--semibold\">(.*?)</span>");
@@ -114,16 +114,15 @@ public class EssensplanImpl implements Essensplan {
         }
     }
 
-    public ArrayList<String> gibmenuliste()
-    {
+    public ArrayList<String> gibmenuliste() {
         return listmenu;
     }
-    public ArrayList<String> gibpriceliste()
-    {
+
+    public ArrayList<String> gibpriceliste() {
         return listprice;
     }
-    public ArrayList<LocalDate> gibdateliste()
-    {
+
+    public ArrayList<LocalDate> gibdateliste() {
         return listdate;
     }
 }

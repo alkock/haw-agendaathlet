@@ -37,29 +37,25 @@ import java.util.List;
 import de.haw.agendaathlet.InjectorManager;
 import de.haw.agendaathlet.R;
 
-public class ModuleSearchAdapter extends ArrayAdapter<String>
-{
+public class ModuleSearchAdapter extends ArrayAdapter<String> {
 
     public static boolean[] checkBoxState;
     public static boolean[] checkBoxState2 = new boolean[InjectorManager.IM.gibICSCrawler().getNameList().size()];
 
-    public ModuleSearchAdapter(Context context, int resource, List<String> stringList)
-    {
-        super(context,resource,stringList);
+    public ModuleSearchAdapter(Context context, int resource, List<String> stringList) {
+        super(context, resource, stringList);
         checkBoxState = new boolean[stringList.size()];
 
-        for(int i=0;i<stringList.size();i++){
+        for (int i = 0; i < stringList.size(); i++) {
             checkBoxState[i] = false;
         }
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
-    {
+    public View getView(int position, View convertView, ViewGroup parent) {
         String string = getItem(position);
 
-        if(convertView == null)
-        {
+        if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_modul_suche, parent, false);
         }
 
@@ -72,16 +68,28 @@ public class ModuleSearchAdapter extends ArrayAdapter<String>
             @Override
             public void onClick(View v) {
                 int getPosition = (Integer) v.getTag();  // Here we get the position that we have set for the checkbox using setTag.
-                checkBoxState[getPosition]= ((CheckBox) v).isChecked(); // Set the value of checkbox to maintain its state.
+                checkBoxState[getPosition] = ((CheckBox) v).isChecked(); // Set the value of checkbox to maintain its state.
                 checkBoxState2[InjectorManager.IM.gibICSCrawler().getNameList().indexOf(fachName.getText().toString())] = ((CheckBox) v).isChecked();
+            }
+        });
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CheckBox check = v.findViewById(R.id.checkBox1);
+                check.setChecked(!check.isChecked());
+                checkBoxState[position] = check.isChecked(); // Set the value of checkbox to maintain its state.
+                checkBoxState2[InjectorManager.IM.gibICSCrawler().getNameList().indexOf(fachName.getText().toString())] = check.isChecked();
             }
         });
 
         fachName.setText(string);
         return convertView;
+
+
     }
 
-    public boolean isChecked(int index){
+    public boolean isChecked(int index) {
         return checkBoxState2[index];
     }
 

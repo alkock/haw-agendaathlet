@@ -23,10 +23,14 @@
  */
 package de.haw.agendaathlet.impressum;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import de.haw.agendaathlet.R;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import de.haw.agendaathlet.R;
 
 public class ImpressumActivity extends AppCompatActivity {
 
@@ -38,6 +42,26 @@ public class ImpressumActivity extends AppCompatActivity {
 
     public void schliessen(View view) {
         finish();
+    }
+
+    public void sendSupportEmail(View view) {
+        //Version 1 mit Email
+//        Intent i = new Intent(Intent.ACTION_SEND);
+//        i.setType("message/rfc822");
+//        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"tobias.kroeger@haw-hamburg.de"});
+//        i.putExtra(Intent.EXTRA_SUBJECT, "Agendaathlet");
+////        i.putExtra(Intent.EXTRA_TEXT   , "body of email");
+//        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        try {
+//            startActivity(Intent.createChooser(i, "Send mail..."));
+//        } catch (android.content.ActivityNotFoundException ex) {
+//            Toast.makeText(ImpressumActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+//        }
+
+        //Version zwei über Github
+        Uri uri = Uri.parse("https://github.com/SEA2-HAW/haw-agendaathlet/issues"); // missing 'http://' will cause crashed
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 
 }

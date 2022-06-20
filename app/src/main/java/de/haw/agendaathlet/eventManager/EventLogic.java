@@ -26,25 +26,27 @@ package de.haw.agendaathlet.eventManager;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import de.haw.agendaathlet.eventVisual.Event;
 
 public interface EventLogic {
     /**
      * Gibt die Event-Liste zurück.
+     *
      * @return ArrayList<Event>
      */
     ArrayList<Event> getEventList();
 
     /**
      * Gibt die aktuelle Event-Liste zurück.
+     *
      * @return ArrayList<Event>
      */
     ArrayList<Event> getCurrentEventList();
 
     /**
      * Gibt die Events für ein bestimmtes Datum zurück.
+     *
      * @param date
      * @return ArrayList<Event>
      */
@@ -52,6 +54,7 @@ public interface EventLogic {
 
     /**
      * Gibt die Events für ein bestimmtes Datum und eine bestimmte Uhrzeit zurück.
+     *
      * @param date
      * @param time
      * @return ArrayList<Event>
@@ -60,7 +63,10 @@ public interface EventLogic {
 
     /**
      * Fügt Events aus einer ICS-Datei hinzu.
+     *
      * @param x ICS-Datei
      */
     void addicstoEvents(String x);
+
+    ArrayList<Event> getmegaCurrentEventList();
 }

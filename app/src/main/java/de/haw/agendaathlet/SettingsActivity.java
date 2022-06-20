@@ -36,20 +36,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-import de.haw.agendaathlet.InjectorManager;
-import de.haw.agendaathlet.R;
 import de.haw.agendaathlet.eventManager.EventLogic;
-import de.haw.agendaathlet.eventManager.EventModActivity;
 import de.haw.agendaathlet.eventManager.ICSExport.ExportActivity;
-import de.haw.agendaathlet.eventVisual.Event;
 
 public class SettingsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -58,7 +53,8 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
     SharedPreferences sharedPreferences;
     private int mensapreisSpeicher;
     private Spinner spinner;
-    private static final String[] paths = {"Student", "Mitarbeiter", "Gast"};
+    private static final String[] paths = {" STUDENT ", "MITARBEITER", "GAST"};
+    private FirebaseAuth mAuth;
 
     public SettingsActivity() {
         eventLogic = InjectorManager.IM.gibEventLogic();
@@ -108,6 +104,12 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
     public void export(View view) {
         startActivity(new Intent(this, ExportActivity.class));
+    }
+
+    public void openAccountManager(View view) {
+
+        Toast.makeText(this, "Datenschutz nervt", Toast.LENGTH_SHORT).show();
+
     }
 
     public void trash(View view) {

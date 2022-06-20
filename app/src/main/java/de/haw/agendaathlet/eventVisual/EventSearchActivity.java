@@ -24,31 +24,16 @@
 package de.haw.agendaathlet.eventVisual;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 
 import de.haw.agendaathlet.InjectorManager;
 import de.haw.agendaathlet.R;
-import de.haw.agendaathlet.crawler.ICSCrawler;
-import de.haw.agendaathlet.essen.EssAdapter;
 import de.haw.agendaathlet.eventManager.EventLogic;
-import de.haw.agendaathlet.eventManager.ModuleSearchAdapter;
 
 public class EventSearchActivity extends AppCompatActivity {
 
@@ -57,43 +42,39 @@ public class EventSearchActivity extends AppCompatActivity {
     private SearchView suchView;
     private final EventLogic event;
 
-    public EventSearchActivity()
-    {
+    public EventSearchActivity() {
         event = InjectorManager.IM.gibEventLogic();
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_search);
         initWidgets();
     }
 
-    private void initWidgets()
-    {
+    private void initWidgets() {
         listeNamen = findViewById(R.id.listeEvents);
-        adapter = new EventSearchAdapter(getApplicationContext(), event.getCurrentEventList());
+        adapter = new EventSearchAdapter(getApplicationContext(), event.getmegaCurrentEventList());
         suchView = findViewById(R.id.Suche);
         listeNamen.setAdapter(adapter);
         initSuchListener();
     }
 
-    private void initSuchListener()
-    {
+    private void initSuchListener() {
         suchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String s) { return false;}
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
 
             @Override
-            public boolean onQueryTextChange(String s)
-            {
+            public boolean onQueryTextChange(String s) {
                 ArrayList<Event> filteredList = new ArrayList<Event>();
 
-                for(Event ev: event.getEventList())
-                {
+                for (Event ev : event.getmegaCurrentEventList()) {
                     String string = ev.getName();
-                    if(string.toLowerCase().contains(s.toLowerCase())) filteredList.add(ev);
+                    if (string.toLowerCase().contains(s.toLowerCase())) filteredList.add(ev);
                 }
 
                 EventSearchAdapter adapter2 = new EventSearchAdapter(getApplicationContext(), filteredList);

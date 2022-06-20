@@ -24,12 +24,12 @@
 package de.haw.agendaathlet.eventManager;
 
 
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import de.haw.agendaathlet.R;
 
 public class DashboardActivity extends AppCompatActivity {
@@ -37,31 +37,32 @@ public class DashboardActivity extends AppCompatActivity {
     private static final int PICKFILE_RESULT_CODE = 1;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
     }
 
-    public void onClick(View view){
-        if(view.getId() == R.id.modul) {
+    public void onClick(View view) {
+        if (view.getId() == R.id.modul) {
             startActivity(new Intent(DashboardActivity.this, ModuleSearchActivity.class));
         }
 
-        if(view.getId() == R.id.einevent) {
+        if (view.getId() == R.id.einevent) {
             Intent intent = new Intent(DashboardActivity.this, NewEventActivity.class);
             startActivity(intent);
         }
 
-        if(view.getId() == R.id.eventmehrere) {
+        if (view.getId() == R.id.eventmehrere) {
             startActivity(new Intent(DashboardActivity.this, WeeklyEventActivity.class));
         }
 
-        if(view.getId() == R.id.ics) {
+        if (view.getId() == R.id.ics) {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("text/calendar");
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             startActivityForResult(intent, PICKFILE_RESULT_CODE);
         }
+
         finish();
     }
 

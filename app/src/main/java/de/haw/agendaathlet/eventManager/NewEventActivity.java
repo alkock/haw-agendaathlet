@@ -23,8 +23,6 @@
  */
 package de.haw.agendaathlet.eventManager;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -36,6 +34,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -91,9 +91,9 @@ public class NewEventActivity extends AppCompatActivity {
 
     private void initWidgets() {
         eventNameET = findViewById(R.id.eventNameET);
-        eventDateTV = findViewById(R.id.eventDateTV);
-        eventstartTimeTV = findViewById(R.id.eventstartTimeTV);
-        eventendTimeTV = findViewById(R.id.eventendTimeTV);
+        //eventDateTV = findViewById(R.id.eventDateTV);
+        //eventstartTimeTV = findViewById(R.id.eventstartTimeTV);
+        //eventendTimeTV = findViewById(R.id.eventendTimeTV);
         editEventDate = findViewById(R.id.editEventDate);
         timeButtonStart = findViewById(R.id.editTextstartTime);
         timeButtonEnd = findViewById(R.id.editTextendTime);
@@ -109,14 +109,13 @@ public class NewEventActivity extends AppCompatActivity {
 
     private void fillFieldsWithText() {
         editEventDate.setText(CalendarUtils.DateToString(eventDate));
-        System.out.println(CalendarUtils.DateToString(eventDate));
-        eventDateTV.setText("Datum: ");
-        eventstartTimeTV.setText("Startzeit: ");
-        eventendTimeTV.setText("Endzeit: ");
-        eventNameET.setText("Beste VL Ever");
-        timeButtonStart.setText("Zeit auswählen");
-        timeButtonEnd.setText("Zeit auswählen");
-        editeventDescrption.setText("Diese Vorlesung ist wirklich beeindruckend.");
+        //eventDateTV.setText("Datum: ");
+        //eventstartTimeTV.setText("Startzeit: ");
+        //eventendTimeTV.setText("Endzeit: ");
+        //eventNameET.setText("Beste VL Ever");
+        //timeButtonStart.setText("Zeit auswählen");
+        //timeButtonEnd.setText("Zeit auswählen");
+        //editeventDescrption.setText("Diese Vorlesung ist wirklich beeindruckend.");
     }
 
     public void saveEventAction(View view) {
@@ -125,8 +124,8 @@ public class NewEventActivity extends AppCompatActivity {
         String end = timeButtonEnd.getText().toString();
         String desc = editeventDescrption.getText().toString();
 
-        if (start.equals("Zeit auswählen")) start = "00:00";
-        if (end.equals("Zeit auswählen")) end = "00:00";
+        if (start.equals("Startzeit")) start = "00:00";
+        if (end.equals("Endzeit")) end = "00:00";
 
         Event newEvent = new Event(eventName, eventDate, LocalTime.parse(start, DateTimeFormatter.ofPattern("HH:mm")), LocalTime.parse(end, DateTimeFormatter.ofPattern("HH:mm")), desc);
         eventLogic.getEventList().add(newEvent);
@@ -183,15 +182,19 @@ public class NewEventActivity extends AppCompatActivity {
         TimePickerDialog.OnTimeSetListener listner = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int startZeitStunde, int startZeitMinute) {
+
                 NewEventActivity.this.startZeitStunde = startZeitStunde;
                 NewEventActivity.this.startZeitMinute = startZeitMinute;
                 timeButtonStart.setText(String.format(Locale.getDefault(), "%02d:%02d", NewEventActivity.this.startZeitStunde, NewEventActivity.this.startZeitMinute));
             }
+
         };
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog((this), listner, startZeitStunde, startZeitMinute, true);
-        timePickerDialog.setTitle("Zeit auswählen");
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog((this), R.style.Datepicker1, listner, startZeitStunde, startZeitMinute, true);
+        //timePickerDialog.setTitle("Zeit auswählen");
         timePickerDialog.show();
+
     }
 
     public void onClick(View view) {
@@ -254,8 +257,8 @@ public class NewEventActivity extends AppCompatActivity {
             }
         };
 
-        TimePickerDialog timePickerDialog2 = new TimePickerDialog((this), listner, endZeitStunde, endZeitMinute, true);
-        timePickerDialog2.setTitle("Zeit auswählen");
+        TimePickerDialog timePickerDialog2 = new TimePickerDialog((this), R.style.Datepicker1, listner, endZeitStunde, endZeitMinute, true);
+        //timePickerDialog2.setTitle("Zeit auswählen");
         timePickerDialog2.show();
     }
 
@@ -263,13 +266,13 @@ public class NewEventActivity extends AppCompatActivity {
         DatePickerDialog.OnDateSetListener listner = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-                LocalDate date = LocalDate.of(year, monthOfYear+1, dayOfMonth);
+                LocalDate date = LocalDate.of(year, monthOfYear + 1, dayOfMonth);
                 eventDate = date;
                 editEventDate.setText(CalendarUtils.DateToString(eventDate));
             }
         };
-        DatePickerDialog datePickerDialog = new DatePickerDialog((this), listner, eventDate.getYear(), eventDate.getMonthValue()-1, eventDate.getDayOfMonth());
-        datePickerDialog.setTitle("Datum auswählen");
+        DatePickerDialog datePickerDialog = new DatePickerDialog((this), R.style.Datepicker1, listner, eventDate.getYear(), eventDate.getMonthValue() - 1, eventDate.getDayOfMonth());
+        //datePickerDialog.setTitle("Datum auswählen");
         datePickerDialog.show();
     }
 }

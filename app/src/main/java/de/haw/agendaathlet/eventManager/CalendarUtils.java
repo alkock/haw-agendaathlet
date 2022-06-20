@@ -27,54 +27,45 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-public class CalendarUtils
-{
+public class CalendarUtils {
     public static LocalDate selectedDate;
 
-    public static String formattedTime(LocalTime time)
-    {
+    public static String formattedTime(LocalTime time) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
         return time.format(formatter);
     }
 
-    public static String formattedShortTime(LocalTime time)
-    {
+    public static String formattedShortTime(LocalTime time) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         return time.format(formatter);
     }
 
-    public static String monthDayFromDate(LocalDate date)
-    {
+    public static String monthDayFromDate(LocalDate date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd. MMMM");
         return date.format(formatter);
     }
 
-    public static String monthDayFromDate2(LocalDate date)
-    {
+    public static String monthDayFromDate2(LocalDate date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd. MMMM");
         return date.format(formatter);
     }
 
-    public static String DayMonthFromDate(LocalDate date)
-    {
+    public static String DayMonthFromDate(LocalDate date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
         return date.format(formatter);
     }
 
-    public static LocalDate DateFromString(String date)
-    {
+    public static LocalDate DateFromString(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         return LocalDate.parse(date, formatter);
     }
 
-    public static LocalTime TimeFromString(String time)
-    {
+    public static LocalTime TimeFromString(String time) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
         return LocalTime.parse(time, formatter);
     }
 
-    public static String DateToString(LocalDate date)
-    {
+    public static String DateToString(LocalDate date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         return date.format(formatter);
     }
@@ -84,8 +75,7 @@ public class CalendarUtils
         return getstarTime.format(formatter);
     }
 
-    public static LocalTime TimeFromString2(String time)
-    {
+    public static LocalTime TimeFromString2(String time) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         return LocalTime.parse(time, formatter);
     }

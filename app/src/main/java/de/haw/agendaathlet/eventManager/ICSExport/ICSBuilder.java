@@ -23,18 +23,6 @@
  */
 package de.haw.agendaathlet.eventManager.ICSExport;
 
-import android.content.Context;
-import android.net.Uri;
-import android.os.Environment;
-import android.util.Log;
-import android.widget.Toast;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -43,7 +31,7 @@ import de.haw.agendaathlet.eventVisual.Event;
 //import com.google.api.services.calendar.Calendar;
 
 /*
-Diese Klasse
+Diese Klasse baut ICS Dateien für den Export von Terminen
  */
 public class ICSBuilder {
 
@@ -94,26 +82,27 @@ public class ICSBuilder {
     }
 
     //
-    private String descriptionAnpassen(String s)
-    {
+    private String descriptionAnpassen(String s) {
 //        return " Dies ist ein Test || was alles: nicht g-eht 23423";
-        String ausgabe = s.replaceAll("[^A-Za-z0-9 |:-]","");
+        String ausgabe = s.replaceAll("[^A-Za-z0-9 |:-]", "");
         return ausgabe;
 //        return s.replaceAll(" ", "");
     }
-    public Uri icsDateiErstellen(List<Event> eventList, Context context)  {
-        String icsEingabe = buildGesammtICS(eventList);
-        File path = context.getFilesDir();
-        try {
-            FileOutputStream writer = new FileOutputStream(new File(path, "agendaathlet.ics"));
-            writer.write(icsEingabe.getBytes());
-            writer.close();
-            Toast.makeText(context, "Wrote to file", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        return null;
+
+//    public Uri icsDateiErstellen(List<Event> eventList, Context context)  {
+//        String icsEingabe = buildGesammtICS(eventList);
+//        File path = context.getFilesDir();
+//        try {
+//            FileOutputStream writer = new FileOutputStream(new File(path, "agendaathlet.ics"));
+//            writer.write(icsEingabe.getBytes());
+//            writer.close();
+//            Toast.makeText(context, "Wrote to file", Toast.LENGTH_SHORT).show();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return null;
 //        String icsEingabe = buildGesammtICS(eventList);
 //        File file = new File(Environment.getExternalStorageDirectory() + "/" + File.separator + "test.txt");
 //
@@ -168,6 +157,6 @@ public class ICSBuilder {
 //        file.delete();
 //        System.out.println("file deleted");
 
-    }
+//    }
 }
 

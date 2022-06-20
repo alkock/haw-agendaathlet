@@ -37,8 +37,8 @@
             android:layout_marginEnd="2dp"
             android:paddingLeft="100dp"
             android:src="@drawable/logobackgroundkreistrans"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.976"
             app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -49,16 +49,18 @@
         android:id="@+id/edittodo"
         android:layout_width="match_parent"
         android:layout_height="450dp"
+        android:textSize="18sp"
         android:inputType="text|textMultiLine"
-        android:gravity="top"/>
+        android:gravity="top"
+        />
 
     <Button
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="                      speichern                       "
-        android:textColor="@color/blue"
-        android:background="@color/lightGray"
+        android:text="                      Schließen                       "
+        android:textColor="@color/white"
+        android:background="@drawable/buttonshapes"
         android:textStyle="bold"
         android:onClick="save"
         android:layout_gravity="center"

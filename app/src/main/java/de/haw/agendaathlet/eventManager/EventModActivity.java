@@ -45,8 +45,7 @@ import de.haw.agendaathlet.R;
 import de.haw.agendaathlet.datamanagement.Datenverwaltung;
 import de.haw.agendaathlet.eventVisual.Event;
 
-public class EventModActivity extends AppCompatActivity
-{
+public class EventModActivity extends AppCompatActivity {
     private EditText eventName, eventDescription;
     private TextView eventDateTV;
     private Button timeButtonStart;
@@ -62,8 +61,7 @@ public class EventModActivity extends AppCompatActivity
     private int endZeitStunde;
     private int endZeitMinute;
 
-    public EventModActivity()
-    {
+    public EventModActivity() {
         event = InjectorManager.IM.gibEventLogic();
         dv = InjectorManager.IM.gibDatenverwaltung();
         startZeitMinute = 0;
@@ -72,30 +70,32 @@ public class EventModActivity extends AppCompatActivity
         endZeitStunde = 0;
         eventDate = null;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_modify);
         eventName = (EditText) findViewById(R.id.modeventName);
         timeButtonStart = findViewById(R.id.modTextstartTime);
-        timeButtonEnd =  findViewById(R.id.modTextendTime);
+        timeButtonEnd = findViewById(R.id.modTextendTime);
         eventDescription = (EditText) findViewById(R.id.editmodDescription);
         modEventDateDate = findViewById(R.id.modEventDateDate);
-        eventDateTV = (TextView) findViewById(R.id.modeventDateTV);
+        //eventDateTV = (TextView) findViewById(R.id.modeventDateTV);
 
 
         Bundle bundle = getIntent().getExtras();
-            einfach = (int) bundle.get("event");
-            multi = (boolean) bundle.get("multi");
-            Event ev = event.getEventList().get(einfach);
-            eventDate = ev.getDate();
-            eventName.setText(ev.getName());
-            timeButtonStart.setText(CalendarUtils.TimeToString(ev.getstarTime()));
-            timeButtonEnd.setText(CalendarUtils.TimeToString(ev.getendTime()));
-            eventDescription.setText(ev.getDescription());
-            eventDateTV.setText("Datum:");
-            if(!multi) modEventDateDate.setText(CalendarUtils.DateToString(ev.getDate()));
-            else modEventDateDate.setText("Datum: Mehrere Daten ausgewählt");
+        einfach = (int) bundle.get("event");
+        multi = (boolean) bundle.get("multi");
+        Event ev = event.getEventList().get(einfach);
+        eventDate = ev.getDate();
+        if (multi) eventDate = LocalDate.MAX;
+        eventName.setText(ev.getName());
+        timeButtonStart.setText(CalendarUtils.TimeToString(ev.getstarTime()));
+        timeButtonEnd.setText(CalendarUtils.TimeToString(ev.getendTime()));
+        eventDescription.setText(ev.getDescription());
+        //eventDateTV.setText("Datum:");
+        if (!multi) modEventDateDate.setText(CalendarUtils.DateToString(ev.getDate()));
+        else modEventDateDate.setText("Mehrere Daten ausgewählt");
     }
 
     public void close(View view) {
@@ -106,16 +106,17 @@ public class EventModActivity extends AppCompatActivity
 
         List<Event> zuAenderndeEvents = new ArrayList<>();
 
-        if(!multi) zuAenderndeEvents.add(event.getEventList().get(einfach));
+        if (!multi) zuAenderndeEvents.add(event.getEventList().get(einfach));
         else {
-            for(int j = 0; j < event.getEventList().size(); j++) {
-                if(event.getEventList().get(j).getName().equals(event.getEventList().get(einfach).getName())) zuAenderndeEvents.add(event.getEventList().get(j));
+            for (int j = 0; j < event.getEventList().size(); j++) {
+                if (event.getEventList().get(j).getName().equals(event.getEventList().get(einfach).getName()))
+                    zuAenderndeEvents.add(event.getEventList().get(j));
             }
         }
 
-        for(int j = 0; j < zuAenderndeEvents.size(); j++) {
+        for (int j = 0; j < zuAenderndeEvents.size(); j++) {
             zuAenderndeEvents.get(j).setName(eventName.getText().toString());
-            zuAenderndeEvents.get(j).setDate(eventDate);
+            if (!eventDate.equals(LocalDate.MAX)) zuAenderndeEvents.get(j).setDate(eventDate);
             zuAenderndeEvents.get(j).setstartTime(CalendarUtils.TimeFromString2(timeButtonStart.getText().toString()));
             zuAenderndeEvents.get(j).setendTime(CalendarUtils.TimeFromString2(timeButtonEnd.getText().toString()));
             zuAenderndeEvents.get(j).setDescription(eventDescription.getText().toString());
@@ -135,8 +136,8 @@ public class EventModActivity extends AppCompatActivity
             }
         };
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog((this), listner, startZeitStunde, startZeitMinute, true);
-        timePickerDialog.setTitle("Zeit auswählen");
+        TimePickerDialog timePickerDialog = new TimePickerDialog((this), R.style.Datepicker1, listner, startZeitStunde, startZeitMinute, true);
+        //timePickerDialog.setTitle("Zeit auswählen");
         timePickerDialog.show();
     }
 
@@ -150,8 +151,8 @@ public class EventModActivity extends AppCompatActivity
             }
         };
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog((this), listner, endZeitStunde, endZeitMinute, true);
-        timePickerDialog.setTitle("Zeit auswählen");
+        TimePickerDialog timePickerDialog = new TimePickerDialog((this), R.style.Datepicker1, listner, endZeitStunde, endZeitMinute, true);
+        //timePickerDialog.setTitle("Zeit auswählen");
         timePickerDialog.show();
     }
 
@@ -164,8 +165,8 @@ public class EventModActivity extends AppCompatActivity
                 modEventDateDate.setText(CalendarUtils.DateToString(eventDate));
             }
         };
-        DatePickerDialog datePickerDialog = new DatePickerDialog((this), listner, eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth());
-        datePickerDialog.setTitle("Datum auswählen");
+        DatePickerDialog datePickerDialog = new DatePickerDialog((this), R.style.Datepicker1, listner, eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth());
+        //datePickerDialog.setTitle("Datum auswählen");
         datePickerDialog.show();
     }
 }

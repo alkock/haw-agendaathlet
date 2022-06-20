@@ -28,48 +28,33 @@ import static androidx.core.content.PermissionChecker.PERMISSION_GRANTED;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.time.Year;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -80,6 +65,9 @@ import de.haw.agendaathlet.R;
 import de.haw.agendaathlet.eventManager.EventLogic;
 import de.haw.agendaathlet.eventVisual.Event;
 
+/**
+ * Diese Klasse regelt den Export von Events
+ */
 public class ExportActivity extends AppCompatActivity {
 
     private final EventLogic eventLogic;
@@ -101,13 +89,17 @@ public class ExportActivity extends AppCompatActivity {
     }
 
     @Override
+    /*
+    initialisiert die einzelnen Buttons etc. und sorgt insbesondere für die
+    Funktionialität der Tagesauswahl Buttons
+     */
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_export);
         initWidgets();
-        exportICS.setText("Exportiere als Datei");
-        exportGoogle.setText("Exportiere zu Google Calander");
+//        exportICS.setText("Exportiere als Datei");
+//        exportGoogle.setText("Exportiere zu Google Calander");
 
 
         startDatum = (Button) findViewById(R.id.editExportStartDate);
@@ -125,7 +117,7 @@ public class ExportActivity extends AppCompatActivity {
         startDatum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(ExportActivity.this, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                new DatePickerDialog(ExportActivity.this,R.style.Datepicker1, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),  myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
 
@@ -145,11 +137,12 @@ public class ExportActivity extends AppCompatActivity {
         endDatum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(ExportActivity.this, date2, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                new DatePickerDialog(ExportActivity.this, R.style.Datepicker1, date2, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
     }
 
+    // Hilfsmethode für die Tagesauswahl, setzt den Text auf den Auswahl Buttons
     private void updateLabelStart() {
         String myFormat = "dd/MM/yy";
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
@@ -157,6 +150,7 @@ public class ExportActivity extends AppCompatActivity {
 
     }
 
+    // Hilfsmethode für die Tagesauswahl, setzt den Text auf den Auswahl Buttons
     private void updateLabelEnd() {
         String myFormat = "dd/MM/yy";
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
@@ -164,6 +158,10 @@ public class ExportActivity extends AppCompatActivity {
 
     }
 
+    /*
+    Diese Methode sorgt beim request Code 2 für das exportieren einer ICS Datei.
+    Diese wird erzeigt und dann verchickt
+     */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -192,6 +190,10 @@ public class ExportActivity extends AppCompatActivity {
         exportICS = findViewById(R.id.ExportGoogleButton);
     }
 
+    /*
+    Diese Methode sorgt für mehr Sicherheit bei der Tagesauswahl und leitet den ICS export
+    ein.
+     */
     public void icsErstellenNeu(View view) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ExportActivity.this);
@@ -203,6 +205,10 @@ public class ExportActivity extends AppCompatActivity {
             builder.setTitle("Sind sie sicher? ");
             builder.setMessage("ES WERDEN ALLE ELEMENTE AUS DEM GESAMTEN KALENDER EXPORTIERT!!" +
                     "Wenn sie das nicht wollen, wählen sie oben das Zeitfenster aus, aus dem Termine exportiert werden sollen.");
+        } else if (startDatumDate.isAfter(endDatumDate)) {
+            builder.setTitle("Das Startdatum ist nach dem Enddatum");
+            builder.setMessage("Sie sollten die beiden Daten tauschen");
+
         } else {
             builder.setTitle("Sind sie sicher? ");
             builder.setMessage("Es werden alle Elemente vom " + startDatumDate.toString() + " bis zum " + endDatumDate.toString() + " exportiert");
@@ -219,13 +225,15 @@ public class ExportActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 icsSchicken(eventZeitraum(eventLogic.getEventList()));
+//                Toast.makeText(getApplicationContext(),"Termine wurden Exportiert",Toast.LENGTH_LONG).show();
             }
         });
         builder.show();
-
-
     }
 
+    /*
+    diese Methode erstellt eine intent für den ICS export und leitet das erstellen ein.
+     */
     public void icsSchicken(List<Event> eventList) {
 
         ICSBuilder icsBuilder = new ICSBuilder();
@@ -239,12 +247,19 @@ public class ExportActivity extends AppCompatActivity {
 
     }
 
+    /*
+    Diese Methode leitet lediglich den export zum Google Calendar ein
+     */
     public void googleCalenderHinzufuegenNeu(View view) {
 
         addEventsToGoogle(eventZeitraum(eventLogic.getEventList()));
+
     }
 
 
+    /*
+    Diese Methode verbessert durch überprüfungen der Tage die Sicherheit beim Export.
+     */
     public void addEventsToGoogle(List<Event> eventList) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ExportActivity.this);
@@ -256,6 +271,9 @@ public class ExportActivity extends AppCompatActivity {
             builder.setTitle("Sind sie sicher? ");
             builder.setMessage("ES WERDEN ALLE ELEMENTE AUS DEM GESAMTEN KALENDER EXPORTIERT!!" +
                     "Wenn sie das nicht wollen, wählen sie oben das Zeitfenster aus, aus dem Termine exportiert werden sollen.");
+        } else if (startDatumDate.isAfter(endDatumDate)) {
+            builder.setTitle("Das Startdatum ist nach dem Enddatum");
+            builder.setMessage("Sie sollten die beiden Daten tauschen");
         } else {
             builder.setTitle("Sind sie sicher? ");
             builder.setMessage("Es werden alle Elemente vom " + startDatumDate.toString() + " bis zum " + endDatumDate.toString() + " exportiert");
@@ -275,11 +293,17 @@ public class ExportActivity extends AppCompatActivity {
 //            addEventToGoogle2(event);
                     addEventToGoogle(event);
                 }
+                Toast.makeText(getApplicationContext(), "Termine wurden zu Google Calendar Exportiert", Toast.LENGTH_LONG).show();
             }
+
         });
         builder.show();
     }
 
+    /*
+    Diese Methode würde den Export zum Google Calendar über einen Intent verwircklichen.
+    Da dies extrem nervig für den Nutzer ist, wurde sie entfernt.
+     */
 //    public void addEventToGoogle2(Event event) {
 //
 //        OffsetDateTime odt = OffsetDateTime.now(ZoneId.systemDefault());
@@ -320,6 +344,10 @@ public class ExportActivity extends AppCompatActivity {
 //    }
 
 
+    /*
+    Fürgt ein Event zum Google Calendar Hinzu. Dies geschieht ohne intents und über einen Content
+    Resolver.
+     */
     private void addEventToGoogle(Event event) {
 
         checkPermission(callbackId, Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR);
@@ -349,6 +377,10 @@ public class ExportActivity extends AppCompatActivity {
     }
 
 
+    /*
+    Es wird geprüft, ob die benötigten Berechtigungen für den Google Calendar export gegeben sind
+    und erfragt diese sonst.
+     */
     private void checkPermission(int callbackId, String... permissionsId) {
         boolean permissions = true;
         for (String p : permissionsId) {
@@ -360,6 +392,10 @@ public class ExportActivity extends AppCompatActivity {
     }
 
 
+    /*
+    Diese Methode schränkt die Kalendareintäge anhand der Tagesauswahl ein und gibt diese
+    Liste aus.
+     */
     private List<Event> eventZeitraum(List<Event> eventListe) {
         try {
             List<Event> ausgabeListe = new LinkedList<Event>();

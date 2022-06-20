@@ -26,14 +26,16 @@ package de.haw.agendaathlet;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.View;
 import android.widget.EditText;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-public class TodoActivity extends AppCompatActivity{
+public class TodoActivity extends AppCompatActivity {
 
-    private EditText edittodo;
     SharedPreferences sharedPreferences;
+    private EditText edittodo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,34 @@ public class TodoActivity extends AppCompatActivity{
         setContentView(R.layout.activity_todo);
         sharedPreferences = getSharedPreferences("Todo", Context.MODE_PRIVATE);
         edittodo = findViewById(R.id.edittodo);
-        edittodo.setText(sharedPreferences.getString("Todo", "Keine"));
+        edittodo.setText(sharedPreferences.getString("Todo", " •   "));
+
+        edittodo.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            //Add • to the beginning of each line after the user tipes enter
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (count == 1) {
+                    if (s.charAt(start) == '\n') {
+                        edittodo.setText(edittodo.getText().toString() + " •   ");
+                        edittodo.setSelection(edittodo.getText().length());
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("Todo", s.toString());
+                editor.apply();
+            }
+        });
+
     }
 
     public void close(View view) {

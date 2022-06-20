@@ -38,6 +38,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -45,9 +46,8 @@ import de.haw.agendaathlet.InjectorManager;
 import de.haw.agendaathlet.R;
 import de.haw.agendaathlet.eventVisual.Event;
 
-public class WeeklyEventActivity extends AppCompatActivity
-{
-    private EditText editEventName,  editWeekdays, editWeeks, editeventDescrption;
+public class WeeklyEventActivity extends AppCompatActivity {
+    private EditText editEventName, editWeekdays, editWeeks, editeventDescrption;
     private Button startTimeButton;
     private Button endTimeButton;
     private LocalTime startTime;
@@ -57,8 +57,7 @@ public class WeeklyEventActivity extends AppCompatActivity
     private int endZeitMinute;
     private int endZeitStunde;
 
-    public WeeklyEventActivity()
-    {
+    public WeeklyEventActivity() {
         startZeitStunde = 0;
         startZeitMinute = 0;
         endZeitStunde = 0;
@@ -66,8 +65,7 @@ public class WeeklyEventActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_weekly);
         initWidgets();
@@ -75,15 +73,14 @@ public class WeeklyEventActivity extends AppCompatActivity
         endTime = LocalTime.now();
 
         editEventName.setText("Beste VL Ever");
-        startTimeButton.setText("Zeit auswählen");
-        endTimeButton.setText("Zeit auswählen");
+        startTimeButton.setText("Startzeit");
+        endTimeButton.setText("Endzeit");
         editWeekdays.setText("1");
         editWeeks.setText("13,14,15");
         editeventDescrption.setText("Tolle VL");
     }
 
-    private void initWidgets()
-    {
+    private void initWidgets() {
         editEventName = findViewById(R.id.eventNameET);
         startTimeButton = findViewById(R.id.editTextstartTime);
         endTimeButton = findViewById(R.id.editTextendTime);
@@ -92,8 +89,7 @@ public class WeeklyEventActivity extends AppCompatActivity
         editeventDescrption = findViewById(R.id.editeventDescription);
     }
 
-    public void saveEventAction(View view)
-    {
+    public void saveEventAction(View view) {
 
         String eventName = editEventName.getText().toString();
         String start = startTimeButton.getText().toString();
@@ -102,8 +98,8 @@ public class WeeklyEventActivity extends AppCompatActivity
         String weeks = editWeeks.getText().toString();
         String desc = editeventDescrption.getText().toString();
 
-        if(start.equals("Zeit auswählen")) start = "00:00";
-        if(end.equals("Zeit auswählen"))  end = "00:00";
+        if (start.equals("Startzeit")) start = "00:00";
+        if (end.equals("Endzeit")) end = "00:00";
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         startTime = LocalTime.parse(start, formatter);
@@ -112,24 +108,68 @@ public class WeeklyEventActivity extends AppCompatActivity
         try {
 
             String[] days = weekdays.split(",");
-            String[] weeksArray = weeks.split(",");
+            String[] weeksArr = weeks.split(",");
+            List<String> weeksList = new ArrayList<>();
+              for (String week : weeksArr) {
+                 weeksList.add(week);
+                }
+              List<String> toRemove = new ArrayList<String>();
+              List<String> toAdd = new ArrayList<String>();
+            for(String week : weeksList) {
+                if(week.contains("-"))
+                {
+                    String[] weekRange = week.split("-");
+                    int startWeek = Integer.parseInt(weekRange[0]); //52 //14
+                    int endWeek = Integer.parseInt(weekRange[1]); // 2 //16
+                    for(int i = startWeek; (endWeek < startWeek || i <= endWeek) && i <= 52; i = i+1) {
+                        System.out.println(i);
+                        toAdd.add(String.valueOf(i));
+                    }
+                    if(endWeek < startWeek)
+                    {
+                        for(int i = 1; i <= endWeek; i = i+1)
+                        {
+                            System.out.println(i);
+                            toAdd.add(String.valueOf(i));
+                        }
+                    }
+                toRemove.add(week);
+                }
+            }
+            weeksList.removeAll(toRemove);
+            weeksList.addAll(toAdd);
 
-            for (String week : weeksArray) {
+
+            for (String week : weeksList) {
                 for (String day : days) {
-                    LocalDate date = LocalDate.of(2022, 1, 1).with(WeekFields.of(Locale.GERMANY).dayOfWeek(), Integer.parseInt(day)).plusWeeks(Integer.parseInt(week));
-                    Event newEvent = new Event(eventName, date, startTime, endTime, desc);
-                    InjectorManager.IM.gibEventLogic().getEventList().add(newEvent);
-                    List e = new ArrayList();
-                    e.add(newEvent);
-                    InjectorManager.IM.gibDatenverwaltung().speichereEvents(e);
+                    if(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) > Integer.parseInt(week))
+                    {
+                        LocalDate date = LocalDate.of(Calendar.getInstance().get(Calendar.YEAR)+1, 1, 1).with(WeekFields.of(Locale.GERMANY).dayOfWeek(), Integer.parseInt(day)).plusWeeks(Integer.parseInt(week));
+                        Event newEvent = new Event(eventName, date, startTime, endTime, desc);
+                        InjectorManager.IM.gibEventLogic().getEventList().add(newEvent);
+                        List e = new ArrayList();
+                        e.add(newEvent);
+                        System.out.println(newEvent.getDate());
+                        InjectorManager.IM.gibDatenverwaltung().speichereEvents(e);
+                    }
+                    else
+                    {
+                        LocalDate date = LocalDate.of(Calendar.getInstance().get(Calendar.YEAR), 1, 1).with(WeekFields.of(Locale.GERMANY).dayOfWeek(), Integer.parseInt(day)).plusWeeks(Integer.parseInt(week));
+                        Event newEvent = new Event(eventName, date, startTime, endTime, desc);
+                        InjectorManager.IM.gibEventLogic().getEventList().add(newEvent);
+                        List e = new ArrayList();
+                        e.add(newEvent);
+                        System.out.println(newEvent.getDate());
+                        InjectorManager.IM.gibDatenverwaltung().speichereEvents(e);
+                    }
                 }
             }
             finish();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
+            e.printStackTrace();
             Toast.makeText(this, "Fehler bei Tage oder Wochenangabe", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     public void popUpTimerStart(View view) {
@@ -142,8 +182,8 @@ public class WeeklyEventActivity extends AppCompatActivity
             }
         };
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog((this), listner, startZeitStunde, startZeitMinute, true);
-        timePickerDialog.setTitle("Zeit auswählen");
+        TimePickerDialog timePickerDialog = new TimePickerDialog((this), R.style.Datepicker1, listner, startZeitStunde, startZeitMinute, true);
+        //timePickerDialog.setTitle("Zeit auswählen");
         timePickerDialog.show();
     }
 
@@ -157,8 +197,8 @@ public class WeeklyEventActivity extends AppCompatActivity
             }
         };
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog((this), listner, endZeitStunde, endZeitMinute, true);
-        timePickerDialog.setTitle("Zeit auswählen");
+        TimePickerDialog timePickerDialog = new TimePickerDialog((this), R.style.Datepicker1, listner, endZeitStunde, endZeitMinute, true);
+        //timePickerDialog.setTitle("Zeit auswählen");
         timePickerDialog.show();
     }
 }

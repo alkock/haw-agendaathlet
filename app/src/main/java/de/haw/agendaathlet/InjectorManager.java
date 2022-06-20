@@ -25,59 +25,61 @@ package de.haw.agendaathlet;
 
 import de.haw.agendaathlet.crawler.Essensplan;
 import de.haw.agendaathlet.crawler.EssensplanImpl;
+import de.haw.agendaathlet.crawler.FeiertageCrawler;
 import de.haw.agendaathlet.crawler.ICSCrawler;
 import de.haw.agendaathlet.crawler.IcsUrlFinder;
 import de.haw.agendaathlet.datamanagement.Datenverwaltung;
 import de.haw.agendaathlet.eventManager.EventLogic;
 import de.haw.agendaathlet.eventManager.EventLogicImpl;
-
 public class InjectorManager {
 
-    public static  InjectorManager IM;
+    public static InjectorManager IM;
     private ICSCrawler icscrawler;
     private Datenverwaltung datenverwaltung;
     private EventLogic event;
     private Essensplan essensplanImpl;
     private MainActivity mainActivity;
+    private FeiertageCrawler _feiertageCrawler;
 
-    public InjectorManager()
-    {
+    public InjectorManager() {
         IM = this;
     }
 
-    public ICSCrawler gibICSCrawler()
-    {
-        if(icscrawler == null) icscrawler = new IcsUrlFinder();
+    public ICSCrawler gibICSCrawler() {
+        if (icscrawler == null) icscrawler = new IcsUrlFinder();
         return icscrawler;
     }
 
-    public Datenverwaltung gibDatenverwaltung()
-    {
+    public Datenverwaltung gibDatenverwaltung() {
         return datenverwaltung;
     }
 
-    public void setDatenverwaltung(Datenverwaltung datenverwaltung1)
-    {
+    public void setDatenverwaltung(Datenverwaltung datenverwaltung1) {
         datenverwaltung = datenverwaltung1;
     }
 
     public EventLogic gibEventLogic() {
-        if(event == null) event = new EventLogicImpl();
+        if (event == null) event = new EventLogicImpl();
         return event;
     }
 
-    public MainActivity gibMainActivity()
-    {
+    public MainActivity gibMainActivity() {
         return mainActivity;
     }
 
-    public void setMainActivity(MainActivity mainActivity)
-    {
+    public void setMainActivity(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 
     public Essensplan gibEssensplan() {
-        if(essensplanImpl == null) essensplanImpl = new EssensplanImpl();
+        if (essensplanImpl == null) essensplanImpl = new EssensplanImpl();
         return essensplanImpl;
     }
+
+    public FeiertageCrawler gibFeiertageCrawler() {
+        if (_feiertageCrawler == null) _feiertageCrawler = new FeiertageCrawler();
+        return _feiertageCrawler;
+    }
+
+
 }

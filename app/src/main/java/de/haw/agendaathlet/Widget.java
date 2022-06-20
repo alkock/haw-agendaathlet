@@ -30,9 +30,15 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.widget.RemoteViews;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Collections;
+
 import de.haw.agendaathlet.datamanagement.DatenverwaltungImpl;
 import de.haw.agendaathlet.eventManager.CalendarUtils;
 import de.haw.agendaathlet.eventVisual.Event;
+import de.haw.agendaathlet.eventVisual.EventZeitComparator;
 
 public class Widget extends AppWidgetProvider {
 
@@ -44,13 +50,24 @@ public class Widget extends AppWidgetProvider {
         InjectorManager.IM.setDatenverwaltung(new DatenverwaltungImpl(context));
 
         try {
-            Event e = datenverwaltung.ladeEvents().get(0);
-            views.setTextViewText(R.id.wiidgeteventNameAnzeige, e.getName() + "\n") ;
+            ArrayList<Event> eventsList = datenverwaltung.ladeEvents();
+            ArrayList<Event> result = new ArrayList<>();
+
+            for (Event ev : eventsList) {
+                if (ev.getDate().compareTo(LocalDate.now()) >= 0) {
+                    if (ev.getDate().equals(LocalDate.now()) && ((ev.getstarTime().getHour() - (LocalTime.now().getHour())) >= 0))
+                        result.add(ev);
+                } else result.add(ev);
+            }
+
+            Collections.sort(result, new EventZeitComparator());
+
+            Event e = result.get(0);
+
+            views.setTextViewText(R.id.wiidgeteventNameAnzeige, e.getName() + "\n");
             views.setTextViewText(R.id.widgeteventZeitAnzeige, CalendarUtils.DayMonthFromDate(e.getDate()) + "\n" + e.getstarTime() + "\n" + e.getendTime());
             views.setTextViewText(R.id.widgeteventDescriptionAnzeige, e.getDescription());
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             views.setTextViewText(R.id.wiidgeteventNameAnzeige, "Keine Events");
         }
         appWidgetManager.updateAppWidget(appWidgetId, views);

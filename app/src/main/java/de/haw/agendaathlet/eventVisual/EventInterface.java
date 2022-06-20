@@ -29,12 +29,13 @@ import java.time.LocalTime;
 public interface EventInterface {
 
     /**
-    Gibt der Namen Events zurück
+     * Gibt der Namen Events zurück
      */
     String getName();
 
     /**
      * Ändert der Namen Events
+     *
      * @param name
      */
     void setName(String name);
@@ -46,42 +47,49 @@ public interface EventInterface {
 
     /**
      * Ändert das Datum Events
+     *
      * @param date
      */
     void setDate(LocalDate date);
 
     /**
      * Gibt die startZeit Events zurück
+     *
      * @return
      */
     LocalTime getstarTime();
 
     /**
      * Ändert die Zeit Events
+     *
      * @param time
      */
     void setstartTime(LocalTime time);
 
     /**
      * Gibt die EndZeit Event zurück
+     *
      * @return
      */
     LocalTime getendTime();
 
     /**
      * Ändert die Endzeit Events
+     *
      * @param time
      */
     void setendTime(LocalTime time);
 
     /**
      * Gibt die Event beschreibung zurück
+     *
      * @return
      */
     String getDescription();
 
     /**
      * Ändert die Event beschreibung
+     *
      * @param description
      */
     void setDescription(String description);

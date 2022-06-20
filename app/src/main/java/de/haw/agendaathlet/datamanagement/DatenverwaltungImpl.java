@@ -24,6 +24,7 @@
 package de.haw.agendaathlet.datamanagement;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -40,10 +41,14 @@ import de.haw.agendaathlet.essen.Essen;
 import de.haw.agendaathlet.eventManager.CalendarUtils;
 import de.haw.agendaathlet.eventVisual.Event;
 
-public class DatenverwaltungImpl extends SQLiteOpenHelper implements Datenverwaltung  {
+public class DatenverwaltungImpl extends SQLiteOpenHelper implements Datenverwaltung {
     private final Context context;
     public static final String DATABASE_NAME = "Eventsundessen.db";
     public static final int DATABASE_VERSION = 6;
+
+
+    SharedPreferences firebaseSynchActivePreference;
+    SharedPreferences.Editor editor;
 
     //TABLE EVENT
     private static final String TABLE_EVENTS = "events";
@@ -67,16 +72,18 @@ public class DatenverwaltungImpl extends SQLiteOpenHelper implements Datenverwal
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
         Log.v("EventDatenbank:", " Instanz erstellt!");
+//        Log.d("firebaseSynch", "anfang" + firebaseSynchActivePreference.getBoolean("firebaseSynchActive", false));
+
     }
 
-    public void getDatabase()
-    {
-        if(IODatabase == null)  IODatabase = this.getWritableDatabase();
+    public void getDatabase() {
+
+        if (IODatabase == null) IODatabase = this.getWritableDatabase();
     }
 
     public void speichereEvents(List<Event> o) {
         getDatabase();
-        for (Event e: o) {
+        for (Event e : o) {
             /**
              *     private String name;
              *     private LocalDate date;
@@ -96,8 +103,10 @@ public class DatenverwaltungImpl extends SQLiteOpenHelper implements Datenverwal
             cursor.moveToLast();
             int id = cursor.getInt(0);
             cursor.close();
-            Log.e("ID::::", "" + id);
             e.setID(id);
+
+
+
         }
     }
 
@@ -106,29 +115,27 @@ public class DatenverwaltungImpl extends SQLiteOpenHelper implements Datenverwal
     public void speichereEssen(List<String> localname, List<String> localpreis, List<LocalDate> localdate) {
         getDatabase();
 
-        for (LocalDate d: localdate) {
-               IODatabase.execSQL("DELETE FROM " + TABLE_ESSEN + " WHERE " + ESSEN_DATUM + " = '" + CalendarUtils.DateToString(d) + "';");
+        for (LocalDate d : localdate) {
+            IODatabase.execSQL("DELETE FROM " + TABLE_ESSEN + " WHERE " + ESSEN_DATUM + " = '" + CalendarUtils.DateToString(d) + "';");
         }
 
         for (int i = 0; i < localname.size(); i++) {
-                String name = localname.get(i);
-                String preis = localpreis.get(i);
-                String datum = CalendarUtils.DateToString(localdate.get(i));
-                IODatabase.execSQL("INSERT INTO " + TABLE_ESSEN + "(" + ESSEN_NAME + " , " + ESSEN_PREIS +" , " + ESSEN_DATUM + ")" + " VALUES ('" + name + "' , '" + preis + "' , '" + datum + "');");
+            String name = localname.get(i);
+            String preis = localpreis.get(i);
+            String datum = CalendarUtils.DateToString(localdate.get(i));
+            IODatabase.execSQL("INSERT INTO " + TABLE_ESSEN + "(" + ESSEN_NAME + " , " + ESSEN_PREIS + " , " + ESSEN_DATUM + ")" + " VALUES ('" + name + "' , '" + preis + "' , '" + datum + "');");
         }
         IODatabase.execSQL("DELETE FROM " + TABLE_ESSEN + " WHERE " + ESSEN_DATUM + " <= '" + CalendarUtils.DateToString(LocalDate.now().minusDays(120)) + "';");
 
     }
 
     @Override
-    public ArrayList<Essen> ladeEssen()
-    {
+    public ArrayList<Essen> ladeEssen() {
         getDatabase();
         ArrayList<Essen> result = new ArrayList<Essen>();
         Cursor cursor = IODatabase.rawQuery("SELECT * FROM " + TABLE_ESSEN, null);
-        if(cursor.moveToFirst())
-        {
-            do{
+        if (cursor.moveToFirst()) {
+            do {
                 String name = cursor.getString(1);
                 LocalDate datum = CalendarUtils.DateFromString(cursor.getString(2));
                 String preis = cursor.getString(3);
@@ -141,14 +148,12 @@ public class DatenverwaltungImpl extends SQLiteOpenHelper implements Datenverwal
     }
 
     @Override
-    public ArrayList<Essen> ladeEssen(LocalDate date)
-    {
+    public ArrayList<Essen> ladeEssen(LocalDate date) {
         getDatabase();
         ArrayList<Essen> result = new ArrayList<Essen>();
         Cursor cursor = IODatabase.rawQuery("SELECT * FROM " + TABLE_ESSEN + " WHERE " + ESSEN_DATUM + " = '" + CalendarUtils.DateToString(date) + "'", null);
-        if(cursor.moveToFirst())
-        {
-            do{
+        if (cursor.moveToFirst()) {
+            do {
                 String name = cursor.getString(1);
                 LocalDate datum = CalendarUtils.DateFromString(cursor.getString(2));
                 String preis = cursor.getString(3);
@@ -163,8 +168,8 @@ public class DatenverwaltungImpl extends SQLiteOpenHelper implements Datenverwal
     @Override
     public void loescheEvent(Event event) {
         int id = event.getID();
-        Log.e("ID des Events" , "" + id);
         IODatabase.execSQL("DELETE FROM " + TABLE_EVENTS + " WHERE " + EVENTS_ID + " = " + id + ";");
+
     }
 
     @Override
@@ -177,11 +182,13 @@ public class DatenverwaltungImpl extends SQLiteOpenHelper implements Datenverwal
         String description = event.getDescription();
 
         IODatabase.execSQL("UPDATE " + TABLE_EVENTS + " SET " + EVENTS_MODULE_NAME + " = '" + name + "' , " + EVENTS_START_DATE + " = '" + startdate + "' , " + EVENTS_START_TIME + " = '" + starttime + "' , " + EVENTS_END_TIME + " = '" + endtime + "' , " + EVENTS_DESCRIPTION + " = '" + description + "' WHERE " + EVENTS_ID + " = " + id + ";");
+
     }
 
     @Override
     public void loescheAlles() {
         IODatabase.execSQL("DELETE FROM " + TABLE_EVENTS + ";");
+
     }
 
     @Override
@@ -196,9 +203,8 @@ public class DatenverwaltungImpl extends SQLiteOpenHelper implements Datenverwal
          *     private String description;
          */
         Cursor cursor = IODatabase.rawQuery("SELECT * FROM " + TABLE_EVENTS, null);
-        if(cursor.moveToFirst())
-        {
-            do{
+        if (cursor.moveToFirst()) {
+            do {
                 int id = cursor.getInt(0);
                 String name = cursor.getString(1);
                 LocalDate date = CalendarUtils.DateFromString(cursor.getString(2));
@@ -206,10 +212,10 @@ public class DatenverwaltungImpl extends SQLiteOpenHelper implements Datenverwal
                 LocalTime endTime = CalendarUtils.TimeFromString(cursor.getString(4));
                 String description = cursor.getString(5);
 
-                Event event = new Event(id, name, date,startTime,endTime,description);
+                Event event = new Event(id, name, date, startTime, endTime, description);
                 events.add(event);
             }
-            while(cursor.moveToNext());
+            while (cursor.moveToNext());
         }
         return events;
     }
@@ -224,13 +230,13 @@ public class DatenverwaltungImpl extends SQLiteOpenHelper implements Datenverwal
          *     private String description;
          */
 
-        Log.v("EventDatenbank: " , "Erstelle Datenbank..");
+        Log.v("EventDatenbank: ", "Erstelle Datenbank..");
         String query = "CREATE TABLE " + TABLE_EVENTS + " (" + EVENTS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 EVENTS_MODULE_NAME + " TEXT, " +
                 EVENTS_START_DATE + " TEXT, " +
                 EVENTS_START_TIME + " TEXT, " +
                 EVENTS_END_TIME + " TEXT, " +
-                EVENTS_DESCRIPTION + " TEXT"  +
+                EVENTS_DESCRIPTION + " TEXT" +
                 ");";
         db.execSQL(query);
         query = "CREATE TABLE " + TABLE_ESSEN + " (" + ESSEN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -240,7 +246,7 @@ public class DatenverwaltungImpl extends SQLiteOpenHelper implements Datenverwal
                 ");";
 
         db.execSQL(query);
-        Log.v("EventDatenbank:"," Datenbank erstellt!");
+        Log.v("EventDatenbank:", " Datenbank erstellt!");
     }
 
     @Override
@@ -248,5 +254,16 @@ public class DatenverwaltungImpl extends SQLiteOpenHelper implements Datenverwal
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ESSEN);
         onCreate(db);
+    }
+
+    public boolean isFirebaseSynchActive() {
+        boolean firebaseSynchActive = firebaseSynchActivePreference.getBoolean("firebaseSynchActive", false);
+        return firebaseSynchActive;
+    }
+
+    public void setFirebaseSynchActive(boolean firebaseSynchActive) {
+        editor.putBoolean("firebaseSynchActive", firebaseSynchActive);
+        editor.commit();
+        Log.d("firebaseSynch", "Synch=" + firebaseSynchActivePreference.getBoolean("firebaseSynchActive", false));
     }
 }

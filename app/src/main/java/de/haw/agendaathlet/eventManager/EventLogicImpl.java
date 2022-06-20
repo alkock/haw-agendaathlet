@@ -38,14 +38,14 @@ import java.util.regex.Pattern;
 import de.haw.agendaathlet.InjectorManager;
 import de.haw.agendaathlet.datamanagement.Datenverwaltung;
 import de.haw.agendaathlet.eventVisual.Event;
+import de.haw.agendaathlet.eventVisual.EventZeitComparator;
 
 public class EventLogicImpl implements EventLogic {
 
     Datenverwaltung datenverwaltung;
     private final ArrayList<Event> eventsList;
 
-    public EventLogicImpl()
-    {
+    public EventLogicImpl() {
         datenverwaltung = InjectorManager.IM.gibDatenverwaltung();
         eventsList = datenverwaltung.ladeEvents();
     }
@@ -57,37 +57,47 @@ public class EventLogicImpl implements EventLogic {
     public ArrayList<Event> getCurrentEventList() {
         ArrayList<Event> result = new ArrayList<Event>();
 
-        for(Event ev: eventsList) if(ev.getDate().compareTo(LocalDate.now()) >= 0) result.add(ev);
+        for (Event ev : eventsList)
+            if (ev.getDate().compareTo(LocalDate.now()) >= 0) result.add(ev);
 
         return result;
     }
 
-    public ArrayList<Event> eventsForDate(LocalDate date)
-    {
+    public ArrayList<Event> getmegaCurrentEventList() {
+        ArrayList<Event> result = new ArrayList<Event>();
+        for (Event ev : eventsList) {
+            if (ev.getDate().compareTo(LocalDate.now()) >= 0) {
+                if (ev.getDate().equals(LocalDate.now()) && ((ev.getstarTime().getHour() - (LocalTime.now().getHour())) >= 0))
+                {  result.add(ev);}
+                else
+                { result.add(ev);}
+            }
+        }
+        Collections.sort(result, new EventZeitComparator());
+        return result;
+    }
+
+    public ArrayList<Event> eventsForDate(LocalDate date) {
         ArrayList<Event> events = new ArrayList<>();
 
-        for(Event event : eventsList)
-        {
-            if(event.getDate().equals(date)) events.add(event);
+        for (Event event : eventsList) {
+            if (event.getDate().equals(date)) events.add(event);
         }
         return events;
     }
 
-    public ArrayList<Event> eventsForDateAndTime(LocalDate date, LocalTime time)
-    {
+    public ArrayList<Event> eventsForDateAndTime(LocalDate date, LocalTime time) {
         ArrayList<Event> events = new ArrayList<>();
 
-        for(Event event : eventsList)
-        {
-            if(event.getDate().equals(date) &&  event.getstarTime().compareTo(time) <= 0 && event.getendTime().compareTo(time) > 0)
-            {
+        for (Event event : eventsList) {
+            if (event.getDate().equals(date) && event.getstarTime().compareTo(time) <= 0 && event.getendTime().compareTo(time) > 0) {
                 events.add(event);
             }
         }
         return events;
     }
 
-    public void addicstoEvents(String x){
+    public void addicstoEvents(String x) {
 
         String[] input = x.split("BEGIN:VEVENT");
 
@@ -102,7 +112,7 @@ public class EventLogicImpl implements EventLogic {
 //                        "DTEND;TZID=Europe/Berlin: 20220512T113000\n" +
 //                        "END : VEVENT\n";
 
-        for(int i = 1; i< input.length; ++i) {
+        for (int i = 1; i < input.length; ++i) {
 
             String regex = "(?:(?<summary>SUMMARY:)(?<summaryValue>[^\\n]*))|(?:(?<description>DESCRIPTION:)(?<descriptionValue>[^\\n]*))|(?:(?<location>LOCATION:)(?<locationValue>[^\\n]*))|(?:(?<startTime>DTSTART;TZID=Europe/Berlin:\\s*)(?<startTimeValue>[^\\n]*))|(?:(?<endTime>DTEND;TZID=Europe/Berlin:\\s*)(?<endTimeValue>[^\\n]*))";
             Pattern pattern = Pattern.compile(regex);
@@ -123,11 +133,11 @@ public class EventLogicImpl implements EventLogic {
                 } else if (matcher.group("location") != null) {
                     location = matcher.group("locationValue");
                 } else if (matcher.group("startTime") != null) {
-                    String startTimeString = matcher.group("startTimeValue").substring(0,13);
+                    String startTimeString = matcher.group("startTimeValue").substring(0, 13);
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmm");
                     startTime = LocalDateTime.parse(startTimeString, formatter);
                 } else if (matcher.group("endTime") != null) {
-                    String endTimeString = matcher.group("endTimeValue").substring(0,13);
+                    String endTimeString = matcher.group("endTimeValue").substring(0, 13);
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmm");
                     endTime = LocalDateTime.parse(endTimeString, formatter);
                 }
@@ -135,10 +145,11 @@ public class EventLogicImpl implements EventLogic {
 
             Event ev = new Event(summary, startTime.toLocalDate(), startTime.toLocalTime(), endTime.toLocalTime(), description + " || Ort: " + location);
             List e = new ArrayList<Event>();
+            System.out.println(ev.getName());
             e.add(ev);
             InjectorManager.IM.gibDatenverwaltung().speichereEvents(e);
             eventsList.add(ev);
-            Log.e("Eventslist Size:" , eventsList.size() + "");
+            Log.e("Eventslist Size:", eventsList.size() + "");
         }
     }
 }

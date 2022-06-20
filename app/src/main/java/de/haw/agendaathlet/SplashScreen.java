@@ -29,13 +29,11 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import de.haw.agendaathlet.MainActivity;
-
 public class SplashScreen extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
 
@@ -45,7 +43,7 @@ public class SplashScreen extends AppCompatActivity {
                 startActivity(new Intent(SplashScreen.this, MainActivity.class));
                 finish();
             }
-        },300);
+        }, 300);
     }
 }
 
