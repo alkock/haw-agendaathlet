@@ -2,8 +2,6 @@ plugins {
     id 'com.android.application'
 
 }
-apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
 android {
     compileSdk 32
 
@@ -43,14 +41,6 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-
-//TODO einfügen von benötigten Bibliotheken für google API Zufriff
-    implementation platform('com.google.firebase:firebase-bom:30.0.2')
-    implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.google.firebase:firebase-firestore'
-    implementation 'com.google.firebase:firebase-auth'
-    implementation 'com.google.android.gms:play-services-auth:20.2.0'
-    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
 
 
 
